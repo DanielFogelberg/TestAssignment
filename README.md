@@ -45,7 +45,7 @@ make submit recipient="Alice" message="Hello!"
 make fetch
 
 
-# Fetch messages based on optinal start, stop and recipient. Sorted by time
+### Fetch messages based on optinal start, stop and recipient. Sorted by time
 
 make fetch start=0 stop=10 recipient="Alice"
 
