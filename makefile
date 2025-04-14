@@ -16,14 +16,14 @@ clean:
 	rm -rf venv
 	rm -f instance/database.db
 
-# make submit "recipient":"Alice" "message":"Hello"
+# make submit recipient:"bob@mail.com" message:"Hello"
 submit:
 	curl -X POST -H "Content-Type: application/json" \
 		-d '{"recipient": "$(recipient)", "message": "$(message)"}' \
 		http://127.0.0.1:5000/api/messages/
 
 # Fetch all messages (supports optional parameters)
-# Example usage: make fetch start=0 stop=10 recipient="Alice"
+# Example usage: make fetch start=0 stop=10 recipient="alice@mail.com"
 fetch:
 	curl -X GET "http://127.0.0.1:5000/api/messages/?start=$(start)&stop=$(stop)&recipient=$(recipient)"
 

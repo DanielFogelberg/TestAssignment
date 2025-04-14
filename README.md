@@ -40,7 +40,7 @@ The API will be available at `http://127.0.0.1:5000`.
 ### Submit a message
 
 ```bash
-make submit recipient="Alice" message="Hello!"
+make submit recipient="bob@mail.com" message="Hello!"
 ```
 
 ### Fetch all messages
@@ -48,9 +48,9 @@ make submit recipient="Alice" message="Hello!"
 make fetch
 ```
 
-### Fetch messages based on optinal start, stop and recipient. Sorted by time
+### Fetch messages based on optional start, stop and recipient. Sorted by time
 ```bash
-make fetch start=0 stop=10 recipient="Alice"
+make fetch start=0 stop=10 recipient="alice@mail.com"
 ```
 
 ### Fetch unread messages

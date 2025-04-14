@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy 
+from sqlalchemy.sql import func
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
 from datetime import datetime, timezone
 
@@ -14,11 +15,10 @@ class MessageModel(db.Model):
     recipient = db.Column(db.String, nullable=False)
     message = db.Column(db.String, nullable=False)
     read = db.Column(db.Boolean, default=False)
-    timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    timestamp = db.Column(db.DateTime, default=func.now())
 
     def __repr__(self):
         return f'Message(recipient = {self.recipient}, message = {self.message})'
-    
 
 # Create the database    
 with app.app_context():
@@ -70,6 +70,9 @@ class Messages(Resource):
         recipient = args['recipient']
         start = args['start']
         stop = args['stop']
+
+        if start < 0 or stop < 0 or start>stop:
+            abort(400, message="Invalid 'start' and 'stop' input")
 
         query = MessageModel.query
 
@@ -142,6 +145,12 @@ class UnreadMessages(Resource):
     @marshal_with(messageFields)
     def get(self):
         unread_messages = MessageModel.query.filter_by(read=False).all()
+
+        for msg in unread_messages:
+            msg.read = True
+        
+        db.session.commit()
+
         return unread_messages
            
 # Add resources
