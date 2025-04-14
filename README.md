@@ -1,0 +1,75 @@
+# OSTTRA Messaging Service
+
+OSTTRA test assignment, a service for sending and retrieving messages
+
+## Features
+
+- Submit a message to a recipient
+- Fetch unread messages
+- Delete a single message
+- Delete multiple messages
+- Fetch messages with optional pagination
+
+## Tech Stack
+
+- Flask
+- SQLite
+
+
+## Setup Instructions
+
+### 1. Clone the repository
+
+
+### 2. Install dependencies and create a virtual environment
+
+make install
+
+This sets up a virtual environment and installs all packages from `requirements.txt`.
+
+### 3. Run the server
+
+make run
+
+The API will be available at `http://127.0.0.1:5000`.
+
+## API Usage with `make`
+
+### Submit a message
+
+make submit recipient="Alice" message="Hello!"
+
+
+### Fetch all messages
+
+make fetch
+
+
+# Fetch messages based on optinal start, stop and recipient. Sorted by time
+
+make fetch start=0 stop=10 recipient="Alice"
+
+
+### Fetch unread messages
+
+make fetch-unread
+
+
+### Delete a single message
+
+make delete-single id=1
+
+
+### Delete multiple messages
+
+make delete-multiple ids='[1,2,3]'
+
+
+### Clean up virtual environment and database
+
+make clean
+
+
+## Notes
+
+- All endpoints are accessible with `curl` or similar tools
