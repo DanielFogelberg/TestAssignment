@@ -2,7 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy 
 from sqlalchemy.sql import func
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
-from datetime import datetime, timezone
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -71,8 +70,14 @@ class Messages(Resource):
         start = args['start']
         stop = args['stop']
 
-        if start < 0 or stop < 0 or start>stop:
-            abort(400, message="Invalid 'start' and 'stop' input")
+        if start < 0:
+            abort(400, message="'start' and/or 'stop' cannot be negative")
+        
+        if stop is not None:
+            if stop < 0:
+                abort(400, message="'start' and/or 'stop' cannot be negative")
+            if start>stop:
+                abort(400, message="''start' cannot be greater than 'stop' input")
 
         query = MessageModel.query
 
@@ -101,8 +106,7 @@ class Messages(Resource):
         message = MessageModel(recipient=args["recipient"], message=args["message"])
         db.session.add(message)
         db.session.commit()
-        messages = MessageModel.query.all()
-        return messages, 201
+        return message, 201
     
     @marshal_with(messageFields)
     def delete(self):
@@ -117,7 +121,7 @@ class Messages(Resource):
             db.session.delete(msg)
     
         db.session.commit()
-        return MessageModel.query.all()
+        return '', 204
 
 # Class for the /api/messages/<int:id> resource
 class Message(Resource):
@@ -137,8 +141,7 @@ class Message(Resource):
             abort(404, message="Message not found")
         db.session.delete(message)
         db.session.commit()
-        messages = MessageModel.query.all()
-        return messages
+        return '', 204
     
 # Class for /api/messages/unread resource
 class UnreadMessages(Resource):
