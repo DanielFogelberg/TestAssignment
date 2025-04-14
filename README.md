@@ -1,6 +1,6 @@
 # Messaging Service
 
-Home test assignment, a service for sending and retrieving messages
+Test assignment, a service for sending and retrieving messages
 
 ## Features
 
