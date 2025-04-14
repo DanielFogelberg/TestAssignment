@@ -1,6 +1,6 @@
-# OSTTRA Messaging Service
+# Messaging Service
 
-OSTTRA test assignment, a service for sending and retrieving messages
+Home test assignment, a service for sending and retrieving messages
 
 ## Features
 
