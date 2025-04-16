@@ -8,7 +8,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db = SQLAlchemy(app)
 api = Api(app)
 
-# Model to represent the messages in the database
+# Model to represent the messages resource in the database
 class MessageModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipient = db.Column(db.String, nullable=False)
@@ -19,7 +19,7 @@ class MessageModel(db.Model):
     def __repr__(self):
         return f'Message(recipient = {self.recipient}, message = {self.message})'
 
-# Create the database    
+# Initialize the database    
 with app.app_context():
     db.create_all()
 
@@ -51,7 +51,7 @@ fetch_messages_args.add_argument('recipient', type=str, required=False, location
 delete_messages_args = reqparse.RequestParser()
 delete_messages_args.add_argument('ids', type=int, action='append', required=True, help='A list of IDs required')
 
-# To represent the messages
+# To represent the message resource in responses
 messageFields = {
     'id':fields.Integer,
     'recipient':fields.String,
@@ -60,7 +60,7 @@ messageFields = {
     'timestamp':fields.DateTime
 }
 
-# Class for the /api/messages resource
+# Class for the /api/messages endpoint
 class Messages(Resource):
     @marshal_with(messageFields)
     def get(self):
@@ -123,7 +123,7 @@ class Messages(Resource):
         db.session.commit()
         return '', 204
 
-# Class for the /api/messages/<int:id> resource
+# Class for the /api/messages/<int:id> endpoint
 class Message(Resource):
     @marshal_with(messageFields)
     def get(self, id):
@@ -143,7 +143,7 @@ class Message(Resource):
         db.session.commit()
         return '', 204
     
-# Class for /api/messages/unread resource
+# Class for /api/messages/unread endpoint
 class UnreadMessages(Resource):
     @marshal_with(messageFields)
     def get(self):
@@ -156,12 +156,12 @@ class UnreadMessages(Resource):
 
         return unread_messages
            
-# Add resources
+# Add endpoints
 api.add_resource(Messages, '/api/messages/')
 api.add_resource(Message, '/api/messages/<int:id>')
 api.add_resource(UnreadMessages, '/api/messages/unread')
 
-# Home resource
+# Home endpoint
 @app.route('/')
 def home():
     return '<h1>OSTTRA test assignment</h1>'
